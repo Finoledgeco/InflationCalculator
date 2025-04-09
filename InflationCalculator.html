@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inflation Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #001777;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .calculator {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h2 {
+            color: #001777;
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+                .description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+                .description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input[type="number"], select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="number"]:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        
+        .range-slider {
+            width: 100%;
+            margin-top: 15px;
+        }
+        
+        .range-slider input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .range-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #3498db;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .time-period-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .time-period-container select {
+            flex: 1;
+        }
+        
+        .time-period-container input {
+            flex: 1;
+        }
+        
+        .result-container {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .result-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .result-value {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+        
+        .highlight {
+            color: #3498db;
+        }
+        
+        .currency {
+            font-family: Arial, sans-serif;
+        }
+        .finoledge-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: #ffffff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-logo {
+  height: 28px;
+  margin-right: 12px;
+}
+
+.logo-and-title {
+  display: flex;
+  align-items: center;
+}
+        .about-section {
+            text-align: center;
+            margin-top: 20px;
+            color: #777;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+ 
+    <div class="calculator">
+        <h2>INFLATION CALCULATOR</h2>
+        <p class="description">Stay ahead of rising costs with the <b>Finoledge Inflation Calculator</b> – a powerful tool that helps you understand how inflation impacts your money over time. Simply enter your current amount, expected inflation rate, and time period to see the future value of your savings or expenses in today's terms.
+
+Perfect for retirement planning, budgeting, or long-term financial goals, this calculator ensures you make informed decisions to preserve your purchasing power.</p>
+        <div class="input-group">
+            <label for="current-cost">Current Cost</label>
+            <input type="number" id="current-cost" placeholder="Ex. 100000"  oninput="updateSlider(this.value, 'current-cost-slider'); calculateInflation()">
+            <div class="range-slider">
+                <input type="range" id="current-cost-slider" min="1000" max="1000000" step="1000" value="0" oninput="updateInput(this.value, 'current-cost'); calculateInflation()">
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="inflation-rate">Rate of inflation (p.a)</label>
+            <input type="number" id="inflation-rate" step="0.1" placeholder="Ex. 6.5" oninput="updateSlider(this.value, 'inflation-rate-slider'); calculateInflation()">
+            <div class="range-slider">
+                <input type="range" id="inflation-rate-slider" min="0" max="20" step="0.1" value="0" oninput="updateInput(this.value, 'inflation-rate'); calculateInflation()">
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="time-period">Time period (Years)</label>
+            <div class="time-period-container">
+                <input type="number" id="custom-years" min="1" max="100" placeholder="Enter years"  oninput="calculateInflation()">
+            </div>
+        </div>
+        
+        <div class="result-container">
+            <div class="result-item">
+                <div class="result-label">Current Cost</div>
+                <div class="result-value"><span class="currency">₹</span> <span id="current-cost-display">1,00,000</span></div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">Cost Increase</div>
+                <div class="result-value"><span class="currency">₹</span> <span id="cost-increase">0</span></div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">Future Cost</div>
+                <div class="result-value highlight"><span class="currency">₹</span> <span id="future-cost">1,00,000</span></div>
+            </div>
+        </div>
+        <div class="about-section">
+            Finoledge Inflation Calculator
+        </div>
+    </div>
+
+    <script>
+        function updateInput(value, elementId) {
+            document.getElementById(elementId).value = value;
+        }
+        
+        function updateSlider(value, sliderId) {
+            document.getElementById(sliderId).value = value;
+        }
+        
+        function calculateInflation() {
+            const currentCost = parseFloat(document.getElementById('current-cost').value) || 0;
+            const inflationRate = parseFloat(document.getElementById('inflation-rate').value) / 100 || 0;
+            let years = parseInt(document.getElementById('custom-years').value) || 1;
+            
+            // Validate years input
+            years = Math.max(1, Math.min(100, years));
+            
+            // Calculate future value
+            const futureCost = currentCost * Math.pow(1 + inflationRate, years);
+            const costIncrease = futureCost - currentCost;
+            
+            // Update displays
+            document.getElementById('current-cost-display').textContent = formatNumber(currentCost);
+            document.getElementById('cost-increase').textContent = formatNumber(costIncrease);
+            document.getElementById('future-cost').textContent = formatNumber(futureCost);
+        }
+        
+        function formatNumber(num) {
+            return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+        
+        // Initialize calculator
+        window.onload = function() {
+            calculateInflation();
+        };
+    </script>
+</body>
+</html>
